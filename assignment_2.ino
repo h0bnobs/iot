@@ -12,7 +12,7 @@ const char* ssid = "iPhone (67)";  // Replace with your network's SSID
 const char* password = "max12345";  // Replace with your network's password
 
 // Server configuration (Optional: if you want to send the data to a server)
-const char* server = "http://172.20.10.5:1234/";  // Replace with your server's address
+const char* server = "172.20.10.5";  // Replace with your server's address
 
 void setup() {
   Serial.begin(115200);
@@ -48,13 +48,17 @@ void loop() {
 // Function to send data to a server
 void sendData(const char* data) {
   if (WiFi.status() == WL_CONNECTED) {
+      Serial.println("in the first 'if'");
     // Use WiFiClient for HTTP requests, or any suitable library if needed
     WiFiClient client;
-    if (client.connect(server, 80)) {
+    if (client.connect(server, 1234)) {
+      Serial.println("in the next and connected");
       client.print(String("GET /submit?data=") + data + " HTTP/1.1\r\n" +
                    "Host: " + server + "\r\n" +
                    "Connection: close\r\n\r\n");
       Serial.println("Data sent!");
+    } else {
+      Serial.println("Not connected to server");
     }
     client.stop();
   } else {
