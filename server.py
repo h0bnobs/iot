@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 import json
 import subprocess
@@ -81,6 +81,15 @@ def submit():
         return "Product data found and stored in database", 200
     else:
         return "No data received", 400
+
+
+@app.route('/')
+def get_all_products():
+    # Query all products
+    products = Product.query.all()
+
+    return render_template('index.html', products=products)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=1234)
